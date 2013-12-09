@@ -1,5 +1,6 @@
 window.ChatApp = Backbone.Model.extend({
   initialize: function(){
+    var self = this;
     this.chats = new Chats({model: Chat});
     this.chatsView = new ChatsView({collection: this.chats});
     this.router = new Router();
@@ -7,10 +8,12 @@ window.ChatApp = Backbone.Model.extend({
     //   $('.container').append(chatsView.render());
     // });
     Backbone.history.start();
-
-    $('input').on('click', this.clearInput);
-    $('.sendChat').on('click', this.sendAndReceive.bind(this));
-    $('.sendUsername').on('click', this.setUsername.bind(this));
+    $('.userInput').on('click', this.clearInput);
+    $( ".userInput" ).keydown(function(event) {
+      if (event.keyCode == 13) {
+        self.setUsername();
+      }
+    });
   },
 
   sendAndReceive: function(){
@@ -25,10 +28,28 @@ window.ChatApp = Backbone.Model.extend({
   },
 
   setUsername: function(){
-    if ($('.userInput').val() !== "Username"){
-      this.username = $('.userInput').val();
+    var usernameVal = $('.userInput').val();
+    if (usernameVal !== "Username" && usernameVal !== ""){
+      this.username = usernameVal;
       $('.userInput').remove();
       $('.sendUsername').remove();
+      var $userSpan = $('<span class="username"></span>');
+      $userSpan.text(this.username);
+      $('.inputs').prepend($userSpan);
+      this.addMessageInputs();
     }
+  },
+
+  addMessageInputs: function (){
+    var self = this;
+    var $msgInput = $('<input type="text" class="chatInput" value="Message"></input>');
+    $('.inputs').append($msgInput);
+    $('.chatInput').focus();
+    $('.chatInput').on('click', this.clearInput);
+    $('.chatInput').keydown(function(event) {
+      if (event.keyCode == 13) {
+        self.sendAndReceive();
+      }
+    });
   }
 });
