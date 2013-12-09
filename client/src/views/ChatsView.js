@@ -1,8 +1,6 @@
 window.ChatsView = Backbone.View.extend({
 
   initialize: function(){
-    // debugger;
-    // _.bindAll(this, 'render');
     this.collection.on('received', this.render.bind(this));
   },
 

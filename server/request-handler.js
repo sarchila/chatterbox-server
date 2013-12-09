@@ -9,14 +9,24 @@ var headers = {
 
 var statusCode = 200;
 var objId = 0;
+var timeStamp = new Date().toISOString();
 var messages = [{
-  username: 'Santiago',
-  text: 'testing123',
-  roomname: 'all',
-  objectId: objId
-}];
+    username: 'Santiago',
+    text: 'Hello, World!',
+    roomname: 'all',
+    updatedAt: timeStamp,
+    createdAt: timeStamp,
+    objectId: objId
+  }
+];
+
+var addServerProperties = function(msg){
+  msg.updatedAt = msg.createdAt = new Date().toISOString();
+  msg.objectId = ++objId;
+};
 
 var sendChats = function(req, res){
+  statusCode = 200;
   sendResponse(req, res);
 };
 
@@ -26,10 +36,12 @@ var addChat = function(req, res){
     body += data;
   });
   req.on('end', function () {
-    messages.push(JSON.parse(data));
+    message = JSON.parse(body);
+    addServerProperties(message);
+    messages.push(message);
     statusCode = 201;
+    sendResponse(req, res);
   });
-  sendResponse(req, res);
 };
 
 var sendOptions = function(req, res){

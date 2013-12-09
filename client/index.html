@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
 <head>
-  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css"></link>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"></link>
+  <link rel="stylesheet" href="css/main.css"></link>
   <script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
   <script type="text/javascript" src="bower_components/backbone/backbone-min.js"></script>
@@ -13,24 +14,17 @@
   <script type="text/javascript" src="src/views/ChatView.js"></script>
   <script type="text/javascript" src="src/views/ChatsView.js"></script>
   <script type="text/javascript" src="src/router/Router.js"></script>
+  <script type="text/javascript" src="src/models/ChatApp.js"></script>
 </head>
 <body>
   <div class="container">
     <h1>ChatterBox</h1>
+    <input type="text" class="userInput" value="Username"></input><button class="sendUsername">Select Username</button>
+    <input type="text" class='chatInput' value="Message"></input><button class="sendChat">Send</button>
   </div>
 
   <script type="text/javascript">
-    $(document).ready(function(){
-      chat = new Chat();
-      chats = new Chats();
-      chatsView = new ChatsView({collection: chats});
-      var router = new Router();
-      // router.on('route:index', function(){
-      //   $('.container').append(chatsView.render());
-      // });
-
-      Backbone.history.start();
-    });
+    var chatApp = new ChatApp;
   </script>
 </body>
 </html>
